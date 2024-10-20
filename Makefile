@@ -1,18 +1,26 @@
 srcdir = src
 srcfiles = $(shell find $(srcdir) -name \*.md)
-destfiles = $(patsubst $(srcdir)/%.md,%.html,$(srcfiles))
+destdirs = $(subst $(srcdir)/,,$(sort $(dir $(srcfiles))))
+destfiles = $(srcfiles:$(srcdir)/%.md=%.html)
 
-all: $(destfiles) format
+all: destdirs $(destfiles) format
+
+destdirs:
+	@echo 'building...'
+	@mkdir -p $(destdirs)
 
 $(destfiles): %.html: $(srcdir)/%.md
-	pandoc --data-dir . \
+	@echo $@
+	@pandoc --data-dir . \
 		--defaults base \
 		--verbose \
 		--output $@ \
 		$<
 
 format:
-	prettier --write $(destdir)
+	@echo 'formatting...'
+	@prettier --write $(destfiles)
 
 clean:
-	rm -r $(destdir) index.html
+	@echo 'cleaning up...'
+	@rm -r $(destdirs) *.html
