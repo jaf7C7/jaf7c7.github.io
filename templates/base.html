@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		$for(css)$
+			<link rel="stylesheet" href="$css$" />
+		$endfor$
+		<title>$title$</title>
+	</head>
+	<body>
+		<header class="header">
+			<nav class="nav container">
+				<a href="#" class="logo"><h1>$title$</h1></a>
+				<input type="checkbox" class="nav__menu-btn" id="menu-btn" />
+				<label class="nav__menu-icon" for="nav-menu-btn"></label>
+				<ul class="nav__menu">
+					<li class="nav__menu-item"><a href="#">About</a></li>
+					<li class="nav__menu-item"><a href="#">Contact</a></li>
+					<li class="nav__menu-item"><a href="#">Links</a></li>
+				</ul>
+			</nav>
+		</header>
+		<main class="container">
+			$body$
+		</main>
+	</body>
+</html>

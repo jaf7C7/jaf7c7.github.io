@@ -1,0 +1,9 @@
+# For a list of all options see https://pandoc.org/MANUAL.html#defaults-files
+from: markdown
+to: html
+template: base
+css:
+  - ./styles/base.css
+metadata:
+  lang: en
+  title: How To...

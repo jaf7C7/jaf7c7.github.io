@@ -1,0 +1,172 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	padding-bottom: 30vh;
+}
+
+pre {
+	max-width: 800px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+kbd,
+samp,
+pre,
+code {
+	white-space: pre-wrap; /* Wrap pre lines */
+	font-size: 1rem;
+	background-color: #efefef;
+	border-radius: 5px;
+}
+
+em {
+	font-weight: bold;
+}
+
+kbd,
+samp {
+	padding: 0 0.2rem;
+}
+
+pre {
+	margin-top: 0.2rem;
+	padding: 0.5rem;
+}
+
+main {
+	padding: 1rem;
+}
+
+p {
+	margin-top: 0.5rem;
+}
+
+a {
+	color: black;
+	text-decoration: none;
+}
+
+img {
+	width: 100%;
+}
+
+ul {
+	list-style: none;
+}
+
+.container {
+	max-width: 1000px;
+	padding: 0 0.5rem;
+	margin: 0 auto;
+}
+
+.nav {
+	display: flex;
+	flex-wrap: wrap;
+	position: relative;
+	align-items: center;
+}
+
+.nav__menu {
+	flex-basis: 100%;
+	display: none;
+}
+
+.nav__menu-btn {
+	margin-left: auto;
+	cursor: pointer;
+	opacity: 0;
+	flex-basis: 3rem;
+	height: 3rem;
+}
+
+.nav__menu-icon {
+	height: 2px;
+	width: 20px;
+	background-color: black;
+	position: absolute;
+	right: 1.4rem;
+	top: 1.5rem;
+	cursor: pointer;
+}
+
+.nav__menu-icon::before,
+.nav__menu-icon::after {
+	content: "";
+	width: 100%;
+	height: inherit;
+	background-color: inherit;
+	position: absolute;
+}
+
+.nav__menu-icon::before {
+	top: -5px;
+}
+
+.nav__menu-icon::after {
+	top: 5px;
+}
+
+.nav__menu-btn:checked ~ .nav__menu {
+	display: block;
+	margin-top: 1rem;
+}
+
+.nav__menu-item {
+	text-align: center;
+	padding: 0.5rem;
+}
+
+.logo {
+	font-size: 1.4rem;
+	flex-grow: 1;
+}
+
+.header {
+	box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+	padding: 1.5rem 0;
+	margin-bottom: 2rem;
+}
+
+@media (min-width: 650px) {
+	.nav__menu-icon,
+	.nav__menu-btn {
+		display: none;
+	}
+
+	.nav__menu {
+		display: flex;
+		flex-basis: auto;
+		margin-left: auto;
+	}
+
+	.nav__menu-item + .nav-item {
+		margin-left: 1rem;
+	}
+
+	.nav__menu-item a {
+		position: relative;
+		display: inline-block;
+	}
+
+	.nav__menu-item a::after {
+		content: "";
+		width: 0;
+		height: 1px;
+		background-color: grey;
+		transition: all 0.1s ease-out;
+		position: absolute;
+		bottom: 0;
+		left: 50%;
+	}
+
+	.nav__menu-item:hover a::after {
+		width: 100%;
+		left: 0;
+	}
+}
