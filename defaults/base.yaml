@@ -3,7 +3,8 @@ from: markdown
 to: html
 template: base
 css:
-  - ./styles/base.css
+  - /styles/base.css
 metadata:
   lang: en
   title: How To...
+shift-heading-level-by: -1
