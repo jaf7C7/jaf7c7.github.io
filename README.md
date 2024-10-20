@@ -8,5 +8,6 @@
   + [Tutorial](https://makefiletutorial.com)
   + [Documentation](https://www.gnu.org/software/make/manual/make.html)
   + [Example Makefile](https://github.com/yaml/www.yaml.org/blob/main/Makefile)
+  + [Example build process](https://github.com/yaml/yaml-spec/tree/main/www)
 - [ ] Add navigation
 - [ ] Publish to github pages from `github-pages` branch.
