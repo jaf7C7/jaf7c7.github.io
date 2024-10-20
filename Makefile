@@ -1,24 +1,18 @@
-datadir = $(shell pwd)
 srcdir = src
-destdir = jaf7c7.github.io
-srcfiles = $(wildcard $(srcdir)/*.md)
-destfiles = $(patsubst $(srcdir)/%.md,$(destdir)/%.html,$(srcfiles))
+srcfiles = $(shell find $(srcdir) -name \*.md)
+destfiles = $(patsubst $(srcdir)/%.md,%.html,$(srcfiles))
 
-all: destdir $(destfiles) format
+all: $(destfiles) format
+
+$(destfiles): %.html: $(srcdir)/%.md
+	pandoc --data-dir . \
+		--defaults base \
+		--verbose \
+		--output $@ \
+		$<
 
 format:
 	prettier --write $(destdir)
 
-$(destfiles): $(destdir)/%.html: $(srcdir)/%.md
-	pandoc \
-		--verbose \
-		--data-dir $(datadir) \
-		--defaults base \
-		--output $@ \
-		$<
-
-destdir:
-	test -d $(destdir) || mkdir $(destdir)
-
 clean:
-	rm -r $(destdir)
+	rm -r $(destdir) index.html
