@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<style>
+			.hidden {
+				display: none;
+			}
+
+			.selected {
+				display: block;
+			}
+
+			body > * {
+				width: max-content;
+				margin: 0 auto;
+			}
+
+			h1 {
+				padding: 2rem;
+				margin-bottom: 2rem;
+			}
+
+			.carousel {
+				position: relative;
+				width: 600px;
+				height: 450px;
+			}
+
+			.carousel__img {
+				border-radius: 5px;
+				box-shadow: 3px 3px 10px 1px rgba(0, 0, 0, 0.5);
+			}
+
+			.carousel__btn {
+				position: absolute;
+				top: 40%;
+				width: 100px;
+				height: 100px;
+				background: transparent;
+				border: none;
+			}
+
+			.carousel__btn:hover {
+				cursor: pointer;
+			}
+
+			.carousel__btn::before {
+				content: "";
+				position: absolute;
+				top: 35%;
+				border-width: 5px 0 0 5px;
+				border-color: black;
+				border-style: solid;
+				border-radius: 5px;
+				height: 25%;
+				width: 25%;
+			}
+
+			.carousel__btn:hover::before {
+				border-color: #629fff;
+			}
+
+			.carousel__btn--next {
+				right: -25%;
+			}
+
+			.carousel__btn--next::before {
+				transform: rotate(135deg);
+				right: 40%;
+			}
+
+			.carousel__btn--prev {
+				left: -25%;
+			}
+
+			.carousel__btn--prev::before {
+				transform: rotate(-45deg);
+				left: 40%;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Image Carousel</h1>
+		<section class="carousel">
+			<button class="carousel__btn carousel__btn--prev" value="previous"></button>
+			<button class="carousel__btn carousel__btn--next" value="next"></button>
+			<img
+				class="carousel__img hidden"
+				src="https://picsum.photos/seed/one/600/450"
+				alt="Random Image"
+			/>
+			<img
+				class="carousel__img hidden"
+				src="https://picsum.photos/seed/two/600/450"
+				alt="Random Image"
+			/>
+			<img
+				class="carousel__img hidden"
+				src="https://picsum.photos/seed/three/600/450"
+				alt="Random Image"
+			/>
+			<img
+				class="carousel__img hidden"
+				src="https://picsum.photos/seed/four/600/450"
+				alt="Random Image"
+			/>
+			<img
+				class="carousel__img hidden"
+				src="https://picsum.photos/seed/five/600/450"
+				alt="Random Image"
+			/>
+			<img
+				class="carousel__img hidden"
+				src="https://picsum.photos/seed/six/600/450"
+				alt="Random Image"
+			/>
+			<img
+				class="carousel__img hidden"
+				src="https://picsum.photos/seed/seven/600/450"
+				alt="Random Image"
+			/>
+		</section>
+		<script>
+			window.addEventListener("load", () => {
+				const images = document.querySelectorAll(".carousel__img");
+				let currentIndex = 0;
+				images[currentIndex].classList.add("selected");
+
+				const makeImageSelector = (indexOffset) => {
+					return () => {
+						images[currentIndex].classList.remove("selected");
+						currentIndex = (currentIndex + indexOffset) % images.length;
+						if (currentIndex < 0)
+							currentIndex += images.length;
+						images[currentIndex].classList.add("selected");
+					};
+				};
+
+				document
+					.querySelector('.carousel__btn--prev')
+					.addEventListener("click", makeImageSelector(-1));
+				document
+					.querySelector('.carousel__btn--next')
+					.addEventListener("click", makeImageSelector(1));
+			});
+		</script>
+	</body>
+</html>
