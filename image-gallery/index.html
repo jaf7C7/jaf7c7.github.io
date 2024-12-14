@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Image Gallery</title>
+	<style>
+		@keyframes vertical-wobble {
+			from {
+				transform: translateY(-3%);
+			}
+			to {
+				transform: translateY(0%);
+			}
+		}
+		body > * {
+			width: 90%;
+			max-width: 40em;
+			margin: 0 auto;
+		}
+		h1 {
+			text-align: center;
+			padding: 2em 0;
+		}
+		img {
+			width: 100%;
+		}
+		.image-gallery {
+			/* outline: 2px solid red; */
+		}
+		.main-image {
+			/* outline: 2px solid blue; */
+			margin: 0 auto;
+			border-radius: 1%;
+			box-shadow: 1px 5px 5px 5px rgba(0, 0, 0, 0.2);
+			margin-bottom: 2em;
+			animation-duration: 5s;
+			animation-fill-mode none;
+			animation-direction: reverse;
+			animation-iteration-count: 2;
+		}
+		.thumb-bar {
+			/* outline: 2px solid green; */
+			height: 100px;
+			display: flex;
+			align-items: baseline;
+		}
+		.gallery-image {
+			margin: 0.2em;
+			border-radius: 3%;
+			box-shadow: 1px 1px 2px 3px rgba(0, 0, 0, 0.2);
+			cursor: pointer;
+		}
+		.gallery-image:hover {
+			transform: translateY(-5%);
+			box-shadow: 1px 5px 4px 5px rgba(0, 0, 0, 0.2);
+		}
+	</style>
+</head>
+<body>
+	<h1>Image Gallery</h1>
+	<article class="image-gallery">
+		<img class="main-image">
+		<section class="thumb-bar">
+		</section>
+	</article>
+	<script>
+		const images = [
+			{
+				"src": "https://picsum.photos/seed/1/500/300",
+				"alt": "Random image 1",
+			},
+			{
+				"src": "https://picsum.photos/seed/2/500/300",
+				"alt": "Random image 2",
+			},
+			{
+				"src": "https://picsum.photos/seed/3/500/300",
+				"alt": "Random image 3",
+			},
+			{
+				"src": "https://picsum.photos/seed/4/500/300",
+				"alt": "Random image 4",
+			},
+			{
+				"src": "https://picsum.photos/seed/5/500/300",
+				"alt": "Random image 5",
+			}
+		];
+		const mainImage = document.querySelector('.main-image');
+		mainImage.setAttribute('src', images[0].src);
+		mainImage.setAttribute('alt', images[0].alt);
+		images.forEach((image) => {
+			const e = document.createElement('img');
+			e.classList.add('gallery-image');
+			e.setAttribute('src', image.src);
+			e.setAttribute('alt', image.alt);
+			e.addEventListener('click', (e) => {
+				mainImage.setAttribute('src', e.target.src);
+				mainImage.setAttribute('alt', e.target.alt);
+				mainImage.animate(
+					{ transform: 'scale(100%)', transform: 'scale(98%)'},
+					{ duration: 8, iterations: 1, }
+				);
+			});
+			document.querySelector('.thumb-bar').appendChild(e);
+		});
+	</script>
+</body>
+</html>

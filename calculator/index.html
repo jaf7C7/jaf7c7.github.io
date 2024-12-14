@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calculator</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        text-align: center;
+        padding: 4rem 0;
+      }
+
+      .container {
+        max-width: 300px;
+        margin: 4rem auto;
+      }
+
+      .error {
+        color: red;
+      }
+
+      .calculator {
+        font-family: monospace;
+        font-size: 1rem;
+      }
+
+      .calculator__body {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        border-radius: 3px;
+        box-shadow: 1px 3px 3px 3px rgba(0, 0, 0, 0.1);
+      }
+
+      .calculator__display {
+        margin-bottom: 2rem;
+        overflow: auto;
+      }
+
+      .calculator__display-message {
+        min-height: 2rem;
+      }
+
+      .calculator__display-history {
+        margin-bottom: 1rem;
+        min-height: 1rem;
+      }
+
+      .calculator__display-main {
+        font-weight: bold;
+        font-size: 3rem;
+        min-height: 4rem;
+      }
+
+      .calculator__button {
+        padding: 1em;
+        border-radius: 3px;
+      }
+
+      .calculator__button:hover {
+        outline: 1px solid black;
+        box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
+      }
+
+      .calculator__button:active {
+        background-color: #f0f0f0;
+      }
+
+      .calculator__button--large {
+        grid-column: span 2;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Calculator</h1>
+    <div class="calculator container">
+      <div class="calculator__display" id="display">
+        <div class="calculator__display-message" id="messageDisplay"></div>
+        <div class="calculator__display-history" id="historyDisplay"></div>
+        <div class="calculator__display-main" id="mainDisplay"></div>
+      </div>
+      <div class="calculator__body">
+        <div class="calculator__button calculator__button--large" id="allClear">
+          AC
+        </div>
+        <div class="calculator__button" id="del">Del</div>
+        <div class="calculator__button" id="divide">/</div>
+        <div class="calculator__button" id="one">1</div>
+        <div class="calculator__button" id="two">2</div>
+        <div class="calculator__button" id="three">3</div>
+        <div class="calculator__button" id="multiply">*</div>
+        <div class="calculator__button" id="four">4</div>
+        <div class="calculator__button" id="five">5</div>
+        <div class="calculator__button" id="six">6</div>
+        <div class="calculator__button" id="add">+</div>
+        <div class="calculator__button" id="seven">7</div>
+        <div class="calculator__button" id="eight">8</div>
+        <div class="calculator__button" id="nine">9</div>
+        <div class="calculator__button" id="subtract">-</div>
+        <div class="calculator__button" id="decimalPoint">.</div>
+        <div class="calculator__button" id="zero">0</div>
+        <div class="calculator__button calculator__button--large" id="equals">
+          =
+        </div>
+      </div>
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const display = document.getElementById("display");
+        const mainDisplay = document.getElementById("mainDisplay");
+        const historyDisplay = document.getElementById("historyDisplay");
+        const messageDisplay = document.getElementById("messageDisplay");
+        const inputKeys = [
+          { id: "zero", char: "0" },
+          { id: "one", char: "1" },
+          { id: "two", char: "2" },
+          { id: "three", char: "3" },
+          { id: "four", char: "4" },
+          { id: "five", char: "5" },
+          { id: "six", char: "6" },
+          { id: "seven", char: "7" },
+          { id: "eight", char: "8" },
+          { id: "nine", char: "9" },
+          { id: "divide", char: "/" },
+          { id: "multiply", char: "*" },
+          { id: "add", char: "+" },
+          { id: "subtract", char: "-" },
+          { id: "decimalPoint", char: "." },
+        ];
+        const functionKeys = [
+          { id: "allClear", callback: clearDisplay },
+          { id: "del", callback: deleteChar },
+          { id: "equals", callback: calculateExpression },
+        ];
+        let endOfExpression = false;
+
+        function clearDisplay() {
+          mainDisplay.innerText = "";
+          historyDisplay.innerText = "";
+          messageDisplay.innerText = "";
+        }
+
+        function clearError() {
+          messageDisplay.innerText = "";
+          historyDisplay.innerText = "";
+          display.classList.remove("error");
+        }
+
+        function deleteChar() {
+          mainDisplay.innerText = mainDisplay.innerText.slice(0, -1);
+        }
+
+        function insertChar(char) {
+          if (endOfExpression) {
+            newLine();
+            if (display.classList.contains("error")) {
+              clearError();
+            }
+            endOfExpression = false;
+          }
+          mainDisplay.innerText += char;
+        }
+
+        function newLine() {
+          historyDisplay.innerText = mainDisplay.innerText;
+          mainDisplay.innerText = "";
+        }
+
+        function parseExpression(expr) {
+          if (expr === "") {
+            return;
+          }
+          // If the expression starts with an operator then use the previous
+          // result as the first operand. (Calculation chaining).
+          if (RegExp("^[-+/*]").test(expr)) {
+            expr = historyDisplay.innerText += expr;
+            mainDisplay.innerText = expr;
+          }
+          // Check that `mainDisplay.innerText` doesn't contain any
+          // chars apart from [-+/*.0-9], to avoid arbitrary code being
+          // executed with `eval`.  The evaluation will also fail if the
+          // expression contains two adjacent operators, as all operators are
+          // binary.
+          if (
+            RegExp("[^-+/*.0-9]").test(expr) ||
+            RegExp("[-+/*][-+/*]|\\.[^-+/*]*\\.").test(expr)
+          ) {
+            throw new Error("Invalid expression!");
+          }
+          return expr;
+        }
+
+        function handleError(err) {
+          display.classList.add("error");
+          messageDisplay.innerText = err.message;
+          historyDisplay.innerText = "";
+        }
+
+        function calculateExpression() {
+          endOfExpression = true;
+          try {
+            let expr = parseExpression(mainDisplay.innerText);
+            newLine();
+            // `expr` has been sanitised so only arithmetic expressions can be
+            // evaluated.
+            result = eval?.(`"use strict"; ${expr}`);
+            // Give results to 8 decimal places, trimming trailing zeroes.
+            mainDisplay.innerText = parseFloat(result.toFixed(8));
+          } catch (err) {
+            handleError(err);
+          }
+        }
+
+        inputKeys.forEach((key) => {
+          document.getElementById(key.id).addEventListener("click", () => {
+            insertChar(key.char);
+          });
+        });
+
+        functionKeys.forEach((key) => {
+          document
+            .getElementById(key.id)
+            .addEventListener("click", key.callback);
+        });
+      });
+    </script>
+  </body>
+</html>
