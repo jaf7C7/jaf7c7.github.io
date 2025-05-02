@@ -1,0 +1,3 @@
+[submodule "calculator"]
+	path = calculator
+	url = git@github.com:jaf7C7/calculator.git
